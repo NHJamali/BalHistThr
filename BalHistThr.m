@@ -1,0 +1,61 @@
+%Reading Image & converting data type to double
+img=imread('LovelySpider.jpeg');
+figure
+subplot(2,1,1)
+imshow(img)
+title('Lovely Spider')
+
+img=double(img);
+I=img(:);           % Calculating Histogram
+hst=zeros(1,256);
+for ii =0:255
+    hst(ii+1)=sum(I==ii);
+end
+subplot(2,1,2)
+stem(hst)
+title('Image Histogram')
+axis([1 256 0 65000])
+
+for ii=1:256        % Calculating Start Point
+    if hst(ii)>0
+        stpt=ii;
+        break
+    end
+end
+for ii=256:-1:1     % Calculating End point
+    if hst(ii)>0
+        endpt=ii;
+        break
+    end
+end
+mdpnt=round((stpt+endpt)/2);    %mid point
+lsum=sum(hst(stpt:mdpnt));      % sum of left side
+rsum=sum(hst(mdpnt:endpt));     % sum of right side
+while lsum ~= rsum              % iterative process of finding
+    if rsum>lsum                % balanced mid point
+        endpt=endpt-1;
+        if round((stpt+endpt)/2)< mdpnt
+            mdpnt=mdpnt+1;
+            lsum=sum(hst(stpt:mdpnt));
+            rsum=sum(hst(mdpnt:endpt));
+            
+        end
+    else
+        stpt=stpt+1;
+        if round((stpt+endpt)/2) > mdpnt
+            mdpnt=mdpnt-1;
+            lsum=sum(hst(stpt:mdpnt));
+            rsum=sum(hst(mdpnt:endpt));
+            
+        end
+    end
+            
+            
+end
+figure
+stem(hst)
+axis([0 172 0 65000])
+hold on
+stem(mdpnt,hst(mdpnt),'red', 'linewidth',2)
+disp('The balanced threshold value of Histogram is :')
+disp(mdpnt)
