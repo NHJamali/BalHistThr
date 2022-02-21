@@ -1,3 +1,6 @@
+%       https://matlabgeek.blogspot.com/2022/02/balanced-histogram-thresholding-with.html
+
+
 %Reading Image & converting data type to double
 img=imread('LovelySpider.jpeg');
 figure
