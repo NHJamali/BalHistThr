@@ -3,21 +3,19 @@
 
 %Reading Image & converting data type to double
 img=imread('LovelySpider.jpeg');
+%img(:,:,[2:3]= [] % uncomment this if image is rgb
 figure
 subplot(2,1,1)
 imshow(img)
-title('Lovely Spider')
-
+title('Original Image')
 img=double(img);
+
+
 I=img(:);           % Calculating Histogram
 hst=zeros(1,256);
 for ii =0:255
     hst(ii+1)=sum(I==ii);
 end
-subplot(2,1,2)
-stem(hst)
-title('Image Histogram')
-axis([1 256 0 65000])
 
 for ii=1:256        % Calculating Start Point
     if hst(ii)>0
@@ -55,9 +53,44 @@ while lsum ~= rsum              % iterative process of finding
             
             
 end
+
+
+nimg=zeros(size(img));
+rng=size(img);
+for ii=1:rng(1)
+    for jj=1:rng(2)
+        if img(ii,jj)<=(mdpnt/2)
+            nimg(ii,jj)=255;
+        else
+            nimg(ii,jj)=0;
+        end
+    end
+end
+
+
+subplot(2,1,2)
+imshow(nimg)
+title('Processed Image')
+
+I=nimg(:);           % Calculating Histogram
+hst2=zeros(1,256);
+for ii =0:255
+    hst2(ii+1)=sum(I==ii);
+end
+figure
+subplot(2,1,1)
+stem(hst)
+grid on
+title('original Image Histogram')
+axis([1 256 0 65000])
+subplot(2,1,2)
+stem(hst2)
+title('processed Image Histogram')
+
 figure
 stem(hst)
-axis([0 172 0 65000])
+grid on
+%axis([0 172 0 65000])
 hold on
 stem(mdpnt,hst(mdpnt),'red', 'linewidth',2)
 disp('The balanced threshold value of Histogram is :')
