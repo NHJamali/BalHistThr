@@ -54,12 +54,12 @@ while lsum ~= rsum              % iterative process of finding
             
 end
 
-
+% for image processing
 nimg=zeros(size(img));
 rng=size(img);
 for ii=1:rng(1)
     for jj=1:rng(2)
-        if img(ii,jj)<=(mdpnt/2)
+        if img(ii,jj)<=(mdpnt/2) %point from where the image's background is separated
             nimg(ii,jj)=255;
         else
             nimg(ii,jj)=0;
